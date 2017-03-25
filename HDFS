@@ -1,0 +1,11 @@
+mysql -u root -p
+show databases;
+create database retail_db;  || drop database retail_db;
+create user reatil_dba identified by 'hadoop';  || drop user retail_dba;
+grant all on retail_db.* to retail_dba;
+flush privileges;
+use retail_db;
+source /root/hdp/retail_db.sql;
+
+
+SET hive.execution.engine=tez;   http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.4.3/bk_performance_tuning/content/hive_perf_best_pract_config_tez.html
