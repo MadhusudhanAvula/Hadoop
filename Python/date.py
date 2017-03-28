@@ -1,3 +1,4 @@
+'''change the numeric date to weekdays'''
 import sys
 import datetime
 for line in sys.stdin:
@@ -7,9 +8,9 @@ for line in sys.stdin:
 	print ','.join {[userid, fName, lName,str(weekday)]}
 
 
-In Hive shell:
+'''In Hive shell:
 create a new table but replace the old time column with new column name 
 add python file to hive
 	add file /atom/python/date.py;
- Insert override table newtable select transform(all_old_columns) using 'python data.py' as (all new_table_columns) from old_tabel;
+ Insert override table newtable select transform(all_old_columns) using 'python data.py' as (all new_table_columns) from old_tabel;'''
  
