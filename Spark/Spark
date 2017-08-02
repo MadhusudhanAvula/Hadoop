@@ -1074,3 +1074,12 @@ dense_rank() over (partition by product_category_id order by product_price desc)
 from products p
 distribute by product_category_id) q
 where dr <= 2 order by product_category_id, dr;
+--------------------------------------------------------------------------------------
+val sqlContext = new SQLContext(sc)
+import sqlContext.implicits._ // for `toDF` and $""
+import org.apache.spark.sql.functions._ // for `when`
+
+val df = sc.parallelize(Seq((4, "blah", 2), (2, "", 3), (56, "foo", 3), (100, null, 5)))
+    .toDF("A", "B", "C")
+
+val newDf = df.withColumn("D", when($"B".isNull or $"B" === "", 0).otherwise(1))

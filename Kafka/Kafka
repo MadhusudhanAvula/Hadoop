@@ -1,0 +1,44 @@
+Start Zookeeper
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+Start Broker
+bin/kafka-server-start.sh config/server.properties
+
+Topic Creation
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+List Topic(To check available topics)
+bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+Start Producer
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test 
+
+Start Consumer
+bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic test --from-beginning
+
+Message is a array of bytes.
+To start different kafka broker on same node make a copy of broker config file becaus we cant start multiple brokers with same properties(same broker config file)  bin/kafka-server-start.sh config/server.properties
+broker.id=0;   (brokerPort)listerners=PLAINTEXT://:9092; (brokerLogDir) log.dirs=/tmp/kafka-logs
+
+isr= inSyncReplica
+delete.topic.enable --  By default topic deletion is not allowed
+auto.create.topics.enable  -- In Prod this option is set to false
+log.retention.ms -- By default the value is 7 days
+log.retention.bytes -- we can set the value to 1gb
+
+For Kafka message is just an Array of bytes.
+The activity of converting java object into an array of bytes is called serlization. 
+
+<<< <Producer API>>>
+Producer object{Properties}-- bootstrap.servers
+ProducerRecord--Topicname,PartitionNo,Timestamp,Key,Value
+Producer.Send(record){Method}.
+<<< Three approaches to send a message to Kafka>>>
+Fire and Forget
+Synchronous send
+Asynchronous Send
+ max.in.flight.requests.per.connection By default it is 5 messages per sec
+ 
+Custom serializers:
+Use generic Serializers instead of creating custom serializers and de-serailizers.Generic serilizers like Avro and protocal buffer.Most of the times we use Avro
+

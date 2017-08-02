@@ -1,15 +1,31 @@
 set fs.defaultFS; --> to check the namenode
 
-array_type
-map_type
-struct_type
+array_type     can be accessed by using Index
+map_type       can be accessed by using Key
+struct_type    can be accessed by using .dot operator
+show databases like 's.*'
+
+load data local inpath '/path' into table tez;
+insert overwrite local directory '/path' row format delimited fields terminated by ',' select * from tez;
+
 set hive.metastore.warehouse.dir; --> to find the metastore directory
 set hive.execuation.engine = tez; --> to change the execution engine
 
 set hive.exec.dynamic.partition;
-set hive.exec.dynamic.partition.mode;
+set hive.exec.dynamic.partition.mode; ==> nonstrict
+
+ALTER TABLE tableName ADDPARTATION (dept='accounting');
+MSCK REPAIR TABLE tableName;  if some partation columns are not visible when we do query.
+
+By using below commands we can access sub directories recursively in Hive
+hive> Set mapred.input.dir.recursive=true;
+hive> Set hive.mapred.supports.subdirectories=true;
+
+SET hive.execution.engine=tez;   http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.4.3/bk_performance_tuning/content/hive_perf_best_pract_config_tez.html
 
 To delete and update table need to be created as ORC file format and tbel properties('Transaction' ='true')
+
+Map Join - Files will be kept  in memory then it will get read (but nor recommed)
 
 
 
@@ -117,6 +133,8 @@ department_name string
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
 STORED AS TEXTFILE;
 
+You can stop a partition form being queried by using the ENABLE OFFLINE clause with ALTER TABLE statement.
+
 CREATE TABLE orders (
 order_id int,
 order_date string,
@@ -139,6 +157,9 @@ order_item_product_price float
 PARTITIONED BY (order_month string)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
 STORED AS TEXTFILE;
+
+In Hive, you can enable buckets by using the following command,
+set.hive.enforce.bucketing=true;
 
 CREATE TABLE orders_bucket (
 order_id int,
