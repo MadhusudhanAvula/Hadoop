@@ -25,7 +25,15 @@ SET hive.execution.engine=tez;   http://docs.hortonworks.com/HDPDocuments/HDP2/H
 
 To delete and update table need to be created as ORC file format and tbel properties('Transaction' ='true')
 
-Map Join - Files will be kept  in memory then it will get read (but nor recommed)
+Map Join - Files will be kept  in memory then it will get read (but nor recommed).
+
+EXPLAIN:
+EXPLAIN command that shows the execution plan for a query. The syntax for this statement is as follows:
+EXPLAIN [EXTENDED|DEPENDENCY|AUTHORIZATION] query
+
+The use of EXTENDED in the EXPLAIN statement produces extra information about the operators in the plan. This is typically physical information like file names.
+The use of DEPENDENCY in the EXPLAIN statement produces extra information about the inputs in the plan. It shows various attributes for the inputs.
+The use of AUTHORIZATION in the EXPLAIN statement shows all entities needed to be authorized to execute the query and authorization failures if any exist. 
 
 
 
@@ -409,10 +417,10 @@ stored as orc
 tblproperties ('transactional'='true');
 
 -- Inserting data
-insert into table hive_transactions values (1, 'itversity');
-insert into table hive_transactions values (2, 'itversity');
+insert into table hive_transactions values (1, 'Avula');
+insert into table hive_transactions values (2, 'Avula');
 
---or insert into table hive_transactions (i, j) values (1, 'itversity');
+--or insert into table hive_transactions (i, j) values (1, 'Avula');
 
 -- Updating data
 update hive_transactions set j = 'IT Versity' where i = 2;

@@ -11,7 +11,7 @@ sqoop list-tables \
 sqoop import \
   --connect "jdbc:mysql://hiveserver:3306/retail_db" \
   --username=retail_dba \
-  --password=itversity \
+  --password=avula \
   --table departments \
   --as-textfile \
   --target-dir=/user/root/departments
@@ -25,10 +25,10 @@ sqoop eval \
 -- Reference: http://www.hadoop.com/content/hadoop/en/developers/home/developer-admin-resources/get-started-with-hadoop-tutorial/exercise-1.html
 
 sqoop import-all-tables \
-  --connect "jdbc:mysql://cdh54itversity-mn0.southeastasia.cloudapp.azure.com:3306/retail_db" \
+  --connect "jdbc:mysql://cdh54avula-mn0.southeastasia.cloudapp.azure.com:3306/retail_db" \
   --username retail_dba \
-  --password itversity \
-  --warehouse-dir /user/itversity/dgadiraju/import-all-tables \
+  --password avula \
+  --warehouse-dir /user/avula/dgadiraju/import-all-tables \
   --driver com.mysql.jdbc.Driver
 
 sqoop import-all-tables \
@@ -240,7 +240,7 @@ sqoop import \
 sqoop import \
   --connect "jdbc:mysql://<host_name_here>:3306/retail_db" \
   --username=retail_dba \
-  --password=itversity \
+  --password=avula \
   --table departments \
   --hive-home /user/hive/warehouse \
   --hive-import \

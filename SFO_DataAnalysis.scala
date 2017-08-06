@@ -57,13 +57,13 @@ fire.select("CallType").distinct().show(100, false)
 
 fire.select("CallType").groupBy("CallType").count().orderBy(desc("count")).show(100,false)
 
-import org.apache.spark.sql.functions._  (optional for unixTimeStamp)
-import org.apache.spark.sql.types._  (optional for UnixTimeStamp)
+//import org.apache.spark.sql.functions._  (optional for unixTimeStamp)
+//import org.apache.spark.sql.types._  (optional for UnixTimeStamp)
 import org.apache.spark.sql.functions.unix_timestamp
 ///val res = df.select($"id", $"date", unix_timestamp($"date", "yyyy/MM/dd HH:mm:ss").cast(TimestampType).as("timestamp"), current_timestamp(), current_date())
 
-///val ts = unix_timestamp($"dts","MM/dd/yyyy HH:mm:ss").cast("timestamp")
-df.withColumn("ts", ts).show(2,false)//
+/*val ts = unix_timestamp($"dts","MM/dd/yyyy HH:mm:ss").cast("timestamp")
+  df.withColumn("ts", ts).show(2,false)*/
 //val newDf = df.withColumn("D", when($"B".isNull or $"B" === "", 0).otherwise(1))
 
 //val ts = unix_timestamp($"dts","MM/dd/yyyy HH:mm:ss").cast("timestamp")
@@ -75,12 +75,15 @@ df.withColumn("ts", ts).show(2,false)//
 
 val sf = fire.withColumn("CallDateTS", unix_timestamp($"CallDate","MM/dd/yyyy").cast("timestamp")).drop($"CallDate").withColumn("WatchDateTS", (unix_timestamp($"WatchDate", "MM/dd/yyyy").cast("timestamp"))).drop($"WatchDate").withColumn("ReceivedDtTmTS", (unix_timestamp($"ReceivedDtTm", "MM/dd/yyyy hh:mm:ss aa").cast("timestamp"))) .drop($"ReceivedDtTm").withColumn("EntryDtTmTS", (unix_timestamp($"EntryDtTm", "MM/dd/yyyy hh:mm:ss aa").cast("timestamp"))).drop($"EntryDtTm").withColumn("DispatchDtTmTS", (unix_timestamp($"DispatchDtTm", "MM/dd/yyyy hh:mm:ss aa").cast("timestamp"))).drop($"DispatchDtTm").withColumn("ResponseDtTmTS", (unix_timestamp($"ResponseDtTm", "MM/dd/yyyy hh:mm:ss aa").cast("timestamp"))).drop($"ResponseDtTm").withColumn("OnSceneDtTmTS", (unix_timestamp($"OnSceneDtTm", "MM/dd/yyyy hh:mm:ss aa").cast("timestamp"))).drop($"OnSceneDtTm").withColumn("TransportDtTmTS", (unix_timestamp($"TransportDtTm", "MM/dd/yyyy hh:mm:ss aa").cast("timestamp"))).drop($"TransportDtTm").withColumn("HospitalDtTmTS", (unix_timestamp($"HospitalDtTm", "MM/dd/yyyy hh:mm:ss aa").cast("timestamp"))).drop($"HospitalDtTm").withColumn("AvailableDtTmTS", (unix_timestamp($"AvailableDtTm", "MM/dd/yyyy hh:mm:ss aa").cast("timestamp"))) .drop($"AvailableDtTm")  
 
+sf.select(year($"CallDateTS")).distinct().orderBy("year(CallDateTS)").show()
 
+sf.filter(year($"CallDateTS") === 2016).filter(dayofyear($"CallDateTS")>=180).filter(dayofyear($"CallDateTS")<=187).select(dayofyear($"CallDateTS")).distinct().orderBy("dayofyear(CallDateTS)").show()
 
-val fire1 = fire.withColumn("CallDateTS", unix_timestamp(fire("Call Date"), from_pattern1).cast("timestamp").drop("Call Data")
+sf.filter(year($"CallDateTS") === 2016).filter(dayofyear($"CallDateTS")>=180).filter(dayofyear($"CallDateTS")<=187).groupBy(dayofyear($"CallDateTS")).count().orderBy("dayofyear(CallDateTS)").show()
 
+sf.rdd.getNumPartitions
 
-
-https://community.hortonworks.com/questions/44665/timestamptype-format-for-spark-dataframes.html
+sf.repartition(6).createOrReplaceTempView("sfv")
+/*https://community.hortonworks.com/questions/44665/timestamptype-format-for-spark-dataframes.html
 https://community.hortonworks.com/questions/97719/convert-string-column-into-date-timestamp-spark-da.html
-https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/3741049972324885/3696710289009770/4413065072037724/latest.html
+https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/3741049972324885/3696710289009770/4413065072037724/latest.html*/
