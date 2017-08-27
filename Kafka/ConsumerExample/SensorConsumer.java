@@ -5,7 +5,6 @@ import java.sql.*;
 
 public class SensorConsumer{
 
-
     public static void main(String[] args) throws Exception{
 
             String topicName = "SensorTopic";

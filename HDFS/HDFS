@@ -17,6 +17,13 @@ use retail_db;
 source /root/hdp/retail_db.sql;
 hdfs dfs -dus pathoffile Know the sizs of the HDFS folder
 
+How to configure Replication Factor in HDFS?
+hdfs-site.xml is used to configure HDFS. Changing the dfs.replication property in hdfs-site.xml will change the default replication for all files placed in HDFS.
+You can also modify the replication factor on a per-file basis using the
+Hadoop FS Shell:[training@localhost ~]$ hadoopfs –setrep –w 3 /my/fileConversely,
+you can also change the replication factor of all the files under a directory.
+[training@localhost ~]$ hadoopfs –setrep –w 3 -R /my/dir
+
 Avro -vs- Parquet
 Avro is a row-based storage format for Hadoop. However Avro is more than a serialisation framework its also an IPC framework
 Parquet is a column-based storage format for Hadoop. 

@@ -20,14 +20,45 @@ scala> sc.getCheckpointDir
 res6: Option[String] = Some(hdfs://localhost:8020/home/Avula/Spark6AM/checkpointdirname/2433cb8d-e14e-436c-a85d-6ad3a7d992a3)
 
 
-
-
-
 coalesce, repartition :
 val a = sc.parallelize(Array(1,2,3,4,5,6,7,3,4,3,2,2), 20)
 val b = a.coalesce(2)
 
 val b = a.repartition(3)
+-------------------------------------------------------------------------------------------------------------------
+import org.apache.spark.SparkConf
+
+scala> val conf = new SparkConf().setMaster("local[*]").setAppName("KafkaReceiver")
+conf: org.apache.spark.SparkConf = org.apache.spark.SparkConf@2f8bf5fc
+
+scala> import org.apache.spark.streaming.StreamingContext
+import org.apache.spark.streaming.StreamingContext
+
+scala> import org.apache.spark.streaming.Seconds
+import org.apache.spark.streaming.Seconds
+
+scala> val ssc = new StreamingContext(conf, Seconds(10))
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+15/07/21 09:08:39 INFO SparkContext: Running Spark version 1.4.1
+...
+ssc: org.apache.spark.streaming.StreamingContext = org.apache.spark.streaming.StreamingContext@2ce5cc3
+
+scala> import org.apache.spark.streaming.kafka.KafkaUtils
+import org.apache.spark.streaming.kafka.KafkaUtils
+
+// Note the name of the topic in use - spark-topic
+scala> val kafkaStream = KafkaUtils.createStream(ssc, "localhost:2181","spark-streaming-consumer-group", Map("spark-topic" -> 5))
+kafkaStream: org.apache.spark.streaming.dstream.ReceiverInputDStream[(String, String)] = org.apache.spark.streaming.kafka.KafkaInputDStream@4ab601ac
+
+// The very complex BIG data analytics
+scala> kafkaStream.print()
+
+// Start the streaming context so Spark Streaming polls for messages
+scala> ssc.start
+15/07/21 09:11:31 INFO ReceiverTracker: ReceiverTracker started
+15/07/21 09:11:31 INFO ForEachDStream: metadataCleanupDelay = -1
+...
+15/07/21 09:11:31 INFO StreamingContext: StreamingContext started
 -----------------------------------------------------------------------------------------------------------------------------
 Spark streaming
 
@@ -64,7 +95,6 @@ object NetworkStream {
 ----------------------------------------------------------------------------------------------------------------------
 
 package com.simplespark
-
 
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
@@ -130,9 +160,7 @@ object WIndowStatefulStream {
     ssc.awaitTermination();
 
   }
-
 }
-
 ----------------------------------------------------------------------------------------------------------------------
 package com.simplespark
 
@@ -170,7 +198,6 @@ import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 
 object SimpleApp {
-  
   
   def main(args : Array[String]){
     
