@@ -178,14 +178,11 @@ Write a simple program to perform add function
 
 =>
 
-
 Partial Applied Function:
 -------------------------
 val add = (x : Int, y: Int) => x+y
 
 val partialAdd = add(1, _:Int)
-
-
 
 
 scala> val add = (x : Int, y: Int) => x+y
@@ -199,70 +196,6 @@ partialAdd: Int => Int = $$Lambda$1307/529864074@31fc658f
 
 scala> partialAdd(100)
 res35: Int = 110
-
-
-
-
-
-
-
-
-Collections
-
-OOPS
-
-utilities - file processing, sbt, java integr, perfors, examples
-
-Scala - Avro Schema kafka with out spark
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
