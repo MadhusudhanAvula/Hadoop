@@ -1,3 +1,15 @@
+BlockSize(N) = batchInterval/blockInterval.
+ The blocks generated during the batchInterval are partitions of the RDD. Each partition is a task in spark.
+
+ batch processing time should be less than the batch interval.
+A good approach to figure out the right batch size for your application is to test it with a conservative batch interval (say, 5-10 seconds) and a low data rate. 
+To verify whether the system is able to keep up with the data rate, you can check the value of the end-to-end delay experienced by each processed batch (either look for “Total delay” in Spark driver log4j logs, or use the StreamingListener interface). 
+
+An alternative to receiving data with multiple input streams / receivers is to explicitly repartition the input data stream (using inputStream.repartition(<number of partitions>)). This distributes the received batches of data across the specified number of machines in the cluster before further processing.
+
+Processing Time - The time to process each batch of data.
+Scheduling Delay - the time a batch waits in a queue for the processing of previous batches to finish.
+
 CheckPoint
 ---------
 sc.setCheckpointDir("/home/Avula/Spark6AM/checkpointdirname")
@@ -14,9 +26,9 @@ Untill and Action have triggered it have not stored an RDD
 sc.getCheckpointDir
 res4: Option[String] = None
 
-scala> sc.setCheckpointDir("/home/Avula/Spark6AM/checkpointdirname")
+//scala> sc.setCheckpointDir("/home/Avula/Spark6AM/checkpointdirname")
 
-scala> sc.getCheckpointDir
+//scala> sc.getCheckpointDir
 res6: Option[String] = Some(hdfs://localhost:8020/home/Avula/Spark6AM/checkpointdirname/2433cb8d-e14e-436c-a85d-6ad3a7d992a3)
 
 
@@ -28,25 +40,25 @@ val b = a.repartition(3)
 -------------------------------------------------------------------------------------------------------------------
 import org.apache.spark.SparkConf
 
-scala> val conf = new SparkConf().setMaster("local[*]").setAppName("KafkaReceiver")
+//scala> val conf = new SparkConf().setMaster("local[*]").setAppName("KafkaReceiver")
 conf: org.apache.spark.SparkConf = org.apache.spark.SparkConf@2f8bf5fc
 
-scala> import org.apache.spark.streaming.StreamingContext
+//scala> import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.StreamingContext
 
-scala> import org.apache.spark.streaming.Seconds
+//scala> import org.apache.spark.streaming.Seconds
 import org.apache.spark.streaming.Seconds
 
-scala> val ssc = new StreamingContext(conf, Seconds(10))
+//scala> val ssc = new StreamingContext(conf, Seconds(10))
 Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
 15/07/21 09:08:39 INFO SparkContext: Running Spark version 1.4.1
 ...
 ssc: org.apache.spark.streaming.StreamingContext = org.apache.spark.streaming.StreamingContext@2ce5cc3
 
-scala> import org.apache.spark.streaming.kafka.KafkaUtils
+//scala> import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.kafka.KafkaUtils
 
-// Note the name of the topic in use - spark-topic
+// Note the name of the topic iin use - spark-topic
 scala> val kafkaStream = KafkaUtils.createStream(ssc, "localhost:2181","spark-streaming-consumer-group", Map("spark-topic" -> 5))
 kafkaStream: org.apache.spark.streaming.dstream.ReceiverInputDStream[(String, String)] = org.apache.spark.streaming.kafka.KafkaInputDStream@4ab601ac
 
@@ -153,7 +165,6 @@ object WIndowStatefulStream {
     ssc.checkpoint("/home/Avula/Work/Inputs/SparkInputs/streaming_checkpoint")
 
     val wordPair = lines.flatMap(row => row.split(" ")).map(x => (x, 1)).reduceByKey(_ + _)
-    
     
     wordPair.reduceByKeyAndWindow((x : Int,y : Int) => (x+y), Minutes(1), Seconds(20)).print()
     ssc.start();

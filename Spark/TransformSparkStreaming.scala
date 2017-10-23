@@ -1,17 +1,12 @@
 package com.avula
 
-
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.StreamingContext._
-
 
 object TransformSparkStreaming {
   
   def main(args : Array[String]) {
-  
   val ssc = new StreamingContext("local[2]", "Statefulwordcount", Seconds(10))
-  
-  
     // From File  
     val myFile = ssc.sparkContext.textFile("/home/avula/Work/Inputs/SparkInputs/wordls.txt")
     val wordspair =myFile.flatMap(row =>row.split(" ")).map(x=>(x,1)).reduceByKey(_+_)
@@ -21,8 +16,6 @@ object TransformSparkStreaming {
     val oldwordCount=wordspair.reduceByKey(_+_)
     
     println(oldwordCount)
-    
-    
     
     // From Socket
     val lines = ssc.socketTextStream("10.0.2.15", 9999)    
