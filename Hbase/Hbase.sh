@@ -21,7 +21,7 @@ echo "scan 'tableName', { COLUMNS => 'cf:cq1', FILTER => \"ValueFilter( =, 'bina
 
 echo "scan 'tableName',{FILTER => \"MultipleColumnPrefixFilter('cq1','cq2')\"}" | hbase shell
 
-echo "scan 'tableName',{FILTER => \"MultipleColumnPrefixFilter('cq1','cq2')\"}" | hbase shell | grep -e value=Y -e value2
+echo "scan 'tableName',{FILTER => \"MultipleColumnPrefixFilter('cq1','cq2')\"}" | hbase shell | grep -e value=value1 -e value2
 
 scan 'tableName', {FILTER => "SingleColumnValueFilter('cf','cq1',=,'regexstring:value1') AND SingleColumnValueFilter('cf','cq2',=, 'regexstring:value2' )"}  
 scan 'tableName', {FILTER => "MultipleColumnPrefixFilter('cq1', 'cq2') AND SingleColumnValueFilter('cf','cq1',=,'regexstring:value1') AND SingleColumnValueFilter('cf','cq2',=, 'regexstring:value2' )"}  
