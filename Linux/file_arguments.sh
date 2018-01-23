@@ -74,3 +74,28 @@ If the first argument is !, the result is the negation of the three-argument exp
 The expression is parsed and evaluated according to precedence using the rules listed above
 
 #http://wiki.bash-hackers.org/commands/classictest
+##################################################################################################################################
+read [-ers] [-u <FD>] [-t <TIMEOUT>] [-p <PROMPT>] [-a <ARRAY>] [-n <NCHARS>] [-d <DELIM>] [-i <TEXT>] [<NAME...>]
+The read builtin reads one line of data (text, user input, …) from standard input or a supplied filedescriptor number into one or more variables named by <NAME…>.
+
+Since Bash 4.3-alpha, read skips any NUL (ASCII code 0) characters in input.
+
+If <NAME…> is given, the line is word-split using IFS variable, and every word is assigned to one <NAME>. The remaining words are all assigned to the last <NAME> if more words than variable names are present.
+
+Option	Description
+-a <ARRAY>	read the data word-wise into the specified array <ARRAY> instead of normal variables
+-d <DELIM>	recognize <DELIM> as data-end, rather than <newline>
+-e	on interactive shells: use Bash's readline interface to read the data
+-i <STRING>	preloads the input buffer with text from <STRING>, only works when Readline (-e) is used
+-n <NCHARS>	reads <NCHARS> characters of input, then quits
+-N <NCHARS>	reads <NCHARS> characters of input, ignoring any delimiter, then quits
+-p <PROMPT>	the prompt string <PROMPT> is output (without a trailing automatic newline) before the read is performed
+-r	raw input - disables interpretion of backslash escapes and line-continuation in the read data
+-s	secure input - don't echo input if on a terminal (passwords!)
+-t <TIMEOUT>	wait for data <TIMEOUT> seconds, then quit (exit code 1). Fractional seconds ("5.33") are allowed since Bash 4. A value of 0 immediately returns and indicates if data is waiting in the exit code. Timeout is indicated by an exit code greater than 128. If timeout arrives before data is read completely (before end-of-line), the partial data is saved.
+-u <FD>	use the filedescriptor number <FD> rather than stdin (0)
+When both, -a <ARRAY> and a variable name <NAME> is given, then the array is set, but not the variable.
+
+Of course it's valid to set individual array elements without using -a:
+
+
