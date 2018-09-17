@@ -9,7 +9,7 @@ select count(*) from
 
 select count(*) from  db_name.tableName a where a.load_dtm in ( select max(load_dtm) from db_name.tableName)
 
-select ar.PROV_STTS_KEY,ar.PROV_STTS_EFCTV_DT,ar.PROV_STTS_CD,ar.PROV_STTS_TRMNTN_DT,ar.PROV_STTS_TRMNTN_RSN_CD from dv_bdfehubph_gbd_r000_wh.prov_sps_prov_mstr lateral view explode(prov_stts_aray_txt) arr as ar
+select ar.PROV_STTS_KEY,ar.PROV_STTS_EFCTV_DT,ar.PROV_STTS_CD,ar.PROV_STTS_TRMNTN_DT,ar.PROV_STTS_TRMNTN_RSN_CD from dbName.prov_sps_prov_mstr lateral view explode(prov_stts_aray_txt) arr as ar
 
 select * from
  (select mbr.mbr_key, Count (mbr.mbr_key)  nbr, ml.lang_cd from  EDW_ALLPHI.mbr mbr  left outer join edw_nophi.mbr_lang ml  on mbr.mbr_key = ml.mbr_key  group by mbr.mbr_key,ml.lang_cd) as p
