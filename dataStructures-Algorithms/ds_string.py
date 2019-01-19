@@ -135,3 +135,20 @@ def perm(str):
 
 print(perm("avula"))
 
+###Find the 1st and 2nd Min value in a list/array 
+def minimum(arr):
+    min=arr[0]
+    min2=arr[1]
+    #print("min value before func",min)
+    for i in range(len(arr)):
+        if arr[i] < min:
+            min2 = min
+            min = arr[i]
+            print("minimum value",min)
+            print("second minimum value",min2)
+        
+
+arr=[2,3,0,6]
+minimum(arr)
+    
+
