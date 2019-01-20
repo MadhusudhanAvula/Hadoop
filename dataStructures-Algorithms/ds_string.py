@@ -150,5 +150,28 @@ def minimum(arr):
 
 arr=[2,3,0,6]
 minimum(arr)
-    
+
+### Find kthe smallest or largest in an array.
+def klargestNumber(arr,k):
+    arr.sort(reverse=True)
+    for i in range(k):
+        print(arr[i])
+        
+        
+arr = [1, 23, 12, 9, 30, 2, 50] 
+k = 3
+klargestNumber(arr, k)   
+
+### Find the next greatest element in a array
+def nge(arr):
+    for i in range(0,len(arr)):
+        ne =-1
+        for j in range(i+1, len(arr)):
+            if arr[i] < arr[j]:
+                ne=arr[j]
+                break
+        print(arr[i], "===>",ne)
+
+nge(arr)
+
 
