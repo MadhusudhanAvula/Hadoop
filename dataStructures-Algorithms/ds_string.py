@@ -174,4 +174,23 @@ def nge(arr):
 
 nge(arr)
 
+### Indeed question
+arr=["a","b","c","a","b","a","a","b","c","a"]
+final_list=[]
+def uniqlist(arr):
+    while arr:
+        in_list=list(set(arr))
+        final_list.append(list(in_list))
+        for items in in_list:
+            arr.remove(items)
+        uniqlist(arr)
+    return final_list
+        
+    print(final_list)
+    #new_arr=[subvalues for subvalues in arr if items not in final_list ]
+    print(arr)
+      
+#print(uniqlist(arr))
+
+
 
