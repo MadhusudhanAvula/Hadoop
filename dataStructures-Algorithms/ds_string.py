@@ -192,5 +192,33 @@ def uniqlist(arr):
       
 #print(uniqlist(arr))
 
+## VISA --> FIND HOW MANY TIMES STRING IS PRESENT IN INPUT
+def sockMerchant(arr):
+    count=0
+    sub=['p','c','m','z','b']
+    d={}
+    p=c=m=z=b=0
+    for i in range(len(arr)):
+            if arr[i]=='p':
+                p+=1
+            if arr[i]=='c':
+                c+=1
+            if arr[i]=='m':
+                m+=1
+            if arr[i]=='z':
+                z+=1
+            if arr[i]=='b':
+                b+=1
+    return min(p,c,m,z,b)     
 
 
+if __name__ == '__main__':
+    
+    #ar = list(map(int, input().rstrip().split()))
+    
+    #ar=list(input())
+    ar=list("pcmzbpppcaamrzibpcmbz")
+    print(ar)
+
+    result = sockMerchant(ar)
+    print(result)
