@@ -1,0 +1,20 @@
+pyspark2 --master yarn --deploy-mode client --queue bdf_yarn --driver-memory 2g --executor-memory 12g --conf "spark.dynamicAllocation.enabled=true" --conf "spark.shuffle.service.enabled=true" --conf "spark.executor.instances=6" --conf "spark.dynamicAllocation.initialExecutors=8" --conf "spark.dynamicAllocation.minExecutors=6" --name PySparkBDF --conf "spark.speculative=true" --conf "spark.shuffle.io.maxRetries=15" --conf "spark.shuffle.service.enabled=true" --conf "spark.port.maxRetries=100" --driver-java-options "-Djavax.net.ssl.trustStore=/usr/java/latest/jre/lib/security/cacerts" --files /etc/hive/conf.cloudera.hive/hive-site.xml,/etc/hbase/conf.cloudera.hbase/hbase-site.xml --jars /pr/app/ve2/bdf/appz/edmz/phi/no_gbd/prd/etl/bin/edi/ojdbc6.jar
+
+spark=SparkSession.builder.getOrCreate()
+spark.sparkContext.setLogLevel("ERROR")
+
+sbt "-Djavax.net.ssl.trustStore=wellpoint.cacerts" "set test in assembly := {}"  clean assembly
+-Djavax.net.ssl.trustStore=wellpoint.cacerts
+
+klist -kt avula.keytab
+kinit -kt avula.keytab AF00000@DEVAD.WPANT.COM
+
+## read p from jcexs file
+x=spark.sparkContext._jsc.hadoopConfiguration()
+x.set("hadoop.security.credential.provider.path","jceks://hdfs/user/srcbdfedmzbthts/oracleedmzpf.jceks")
+a=x.getPassword("oraclesitedmzpfpassword.alias")
+passw=""
+foriinrange(a.__len__()):
+passw=passw+str(a.__getitem__(i))
+
+odf=spark.read.format("jdbc").option("url","jdbc:oracle:thin:@ca77dv14scan5:0000/SAMPLEDV").option("dbtable","(select col1,col2,col3 from table where col4 in ('20190408','20190409'))t").option("user","AVULA").option("password","Avula007").option("driver","oracle.jdbc.driver.OracleDriver").option("fetchsize","10000").option("numPartitions",12).load()
