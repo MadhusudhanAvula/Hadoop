@@ -1,3 +1,10 @@
+7 = 4+2+1 (read/write/execute)
+6 = 4+2 (read/write)
+5 = 4+1 (read/execute)
+4 = 4 (read)
+3 = 2+1 (write/execute)
+2 = 2 (write)
+1 = 1 (execute)
 find / -name "mysql*.jar" --> to search 
 ln -s /root/hdp/java/mysql-commector/version(1.5.8.9) /root/hdp/mysql-connector --> to setup a soft link ln -s /orginal_path  /custome_name
 unlink custome_name --> to unlink the path
@@ -7,74 +14,75 @@ ls -al
 
 sudo lsof -u username | grep 'Book.scala'  --- to check file was open or not in linux
 
----------------------------------------------
-java install:
--------------
-sudo apt-get install openjdk-8-jdk
-java -version
-javac -version
+SCP:
+scp avula@hostname:/path/file.dat avula@hostnaem:/path/
 
-To Set Java Path:
-update-alternatives --config java
-gedit /etc/environment
-JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+find /dv/data/ve2/bdf/rawz/phi/gbd/r000/inbound/ -type f | while read filename; do ll $filename; done
+date:
+$(date -d "${CURRENT_DT}" +%s%3N)  --> convert timestamp to 13 bytes epoch time
+sed:
+sed -e 's/\.[^\.]*$//' -e "s/_hist$//"`  --> REMOVING EXTENSION AFTER LAST . AND _HIST
+sed 's/^[^_]*_//g' | sed -e 's/\_[^\_]*$//'  --> REMOVES STRING BEFORE FIRST _ AND AFTER LAST _
 
-Verify Java Path:
-source /etc/environment
-echo $JAVA_HOME
+D="<>"   #Multi Character Delimiter
+string="abcd<>efgh<>ijkl<>mn op<>qr st<>uv wx<>yz"  String with delimiters
 
-Install Hadoop:
-sudo apt-get install ssh
-Verify Hadoop Installation:
-ssh localhost
+#Split the String into Substrings
+sList=($(echo $string | sed -e 's/'"$D"'/\n/g' | while read line; do echo $line | sed 's/[\t ]/'"$D"'/g'; done))
+for (( i = 0; i < ${#sList[@]}; i++ )); do
+  sList[i]=$(echo ${sList[i]} | sed 's/'"$D"'/ /')
+done
 
-Cloudera:
----------
-To start cloudera manager:
-sudo /home/cloudera/cloudera-manager --force
+echo 'aaa,"hell world, test text",bbb,ccc," test text"' | sed 's/,\("[^"]*"\)*/\n\1/g' --> conver , to /n
+aaa
+"hell world, test text"
+bbb
+ccc
+" test text"
 
-sudo /home/cloudera/cloudera-manager --express --force
-To start MySql-------mysql -u root -p
-To show databases-----show databases;
-
-To check the memory in Hadoop cluster:
-Top
-
-Vmstat
-To access environment variables: cat ~/.bash,   cat ~/.bashrc
-To add domine : cat /etc/hosts
-To modify host name:  /etc/sysconfig/network
-
-By using touch command, we can create multiple empty files
-Cat filename.txt |grep “word”
-To find total lines: wc  -l filename.txt
-To merge files in Hadoop: Hadoop fs -getmerge path filenames
+sed -e 's/'"${del}"'/\n/g' | sed -e "${num}q;d"
 
 
-Hadoop fs -cat testing
-Ping (hostname)
-Cat /etc/hosts
-PIG:
-C = FOREACH A GENERATE (loc == 'hyd'?'HYDERABAD':'OTHER') AS Location,loc;
-C = FOREACH A GENERATE (CASE WHEN loc == 'hyd' then 'HYDERABAD' else 'OTHER' end) AS Location,loc;
-conc = FOREACH A GENERATE CONCAT('HomeTwon-',loc) AS LocDtls;
-cnt = FOREACH groupbyloc GENERATE COUNT(A),group;
-A = LOAD '/chenna/sample.txt' USING PigStorage(',') AS (id:int,name:chararray,loc:chararray);
-grp = GROUP A BY loc;
-cnt = FOREACH grp GENERATE COUNT(A),group;
+grep:
+I find that grep -c '^' is significantly faster than grep -c '$'. to find row count in a file.
+grep -i ^delimiter*`
+ifconfig |grep -o -P '(?<=addr:).*(?= Bcast:)'
 
-Cloudera:
-$ wget http://archive.cloudera.com/cm5/installer/latest/cloudera-manager-installer.bin
+awk:
+cat clm_edi_clm_hdr_hist.hql | awk 'BEGIN{FS="="};{print $1}'  --> to find string before =
+echo "arg1=|+a&arg2=|+b&arg3=|+c" | awk 'BEGIN{FS="[=|+]+"};{print $2}'  -->
+echo "arg1=|+a&arg2=|+b&arg3=|+c" | awk -v n=$abc 'BEGIN{FS="[=|+]+"} {print $n}'
 
-$ chmod u+x cloudera-manager-installer.bin
-
-$ sudo ./cloudera-manager-installer.bin
+echo "arg1=|+a&arg2=|+b&arg3=|+c" | awk -v FS="[$del]+" '{print $2}' --> working 
+echo "arg1=|+a&arg2=|+b&arg3=|+c" | awk -v b=$num '{print $b}' FS="[$del]+" --> working good to goo..
+echo "arg1=|+a&arg2=|+b&arg3=|+c" | awk -v n=$num '{print $n}' FS="[$del]+"--> good to go
+echo "arg1=|+a&arg2=|+b&arg3=|+c" | awk -v n=$abc '{print $n}; BEGIN{FS="[=|+]+"}'---> working   ****2307****
 
 
-LINUX Ethernet config:
-cd /etc/sysconfig/network-scripts/
-service network restart
- 
-CentOS:
-To configure the resolve file: nano /etc/resolv.conf
-For host name : nano /etc/sysconfig/networ
+awk -F 'ABCD' '{print $1 FS "."}' file
+
+
+ll:
+find ./atom/scala/ ! -regex '.*/[0-9]+\.html' --> find files without numbers in the fileNames
+find ./atom/scala/ ! -name '*abc*' --> find files with the string 'abc'
+
+Find:
+## Drop files recursively
+find ${Backup}/${SRC_CD^^}* -maxdepth 1 -type f  -mtime +30 -exec rm -f {} \; -print
+touch -a -m -t 201903181205.09 tgs.txt  --> modify file date
+find /path/to/base/dir/* -type d -ctime +10 -exec rm -rf {} \;
+Explanation:
+find: the unix command for finding files / directories / links etc.
+/path/to/base/dir: the directory to start your search in.
+-type d: only find directories
+-ctime +10: only consider the ones with modification time older than 10 days
+-exec ... \;: for each such result found, do the following command in ...
+rm -rf {}: recursively force remove the directory; the {} part is where the find result gets substituted into from the previous part.
+
+## Move or Copy file 
+-maxdepth 0 means do not search directories or subdirectories. Instead only look for a matching file among those explicitly listed on the command line.
+find . -maxdepth 1 -type f | xargs -I {} mv {} /etc/apache2/sites-available/
+
+## Finding the Top 5 Big Files
+find . -type f -exec ls -s {} \; | sort -n -r | head -5
+
