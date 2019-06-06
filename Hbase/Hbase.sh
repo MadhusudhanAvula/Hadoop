@@ -10,6 +10,21 @@ Yes GC does impact on memstore and you can actually modify this behavior by usin
 I would suggest you to read the 3 part article on "Avoiding Full GCs in HBase with MemStore-Local Allocation Buffers" as 
 below : http://www.cloudera.com/blog/2011/02/avoiding-full-gcs-in-hbase-with-memstore-local-allocation-buffers-part-1/
 
+##How do we get the complete list of columns that exist in a column Family?  http://www.hadooptpoint.org/filters-in-hbase-shell/#codesyntax_12
+#https://www.cloudera.com/documentation/enterprise/5-3-x/topics/admin_hbase_filtering.html
+#https://intellipaat.com/tutorial/hbase-tutorial/client-api-advanced-features/
+##https://www.cloudera.com/documentation/enterprise/5-12-x/topics/admin_hbase_import.html
+# cacert /opt/confluent/confluent-3.3.0/secure/wellpoint-rootCA.pem 
+
+The HBase filter will takes two additional optional boolean arguments, filterIfColumnMissing and setLatestVersionOnly.(true,true)
+If the filterIfColumnMissing flag is set to true, the columns of the row will not be emitted if the specified column to check is not found in the row. The default value is false.
+If the setLatestVersionOnly flag is set to false, it will test previous versions (timestamps) in addition to the most recent. The default value is true.
+
+Hbase Filter:
+echo "scan 'namespace:tableName', {FILTER => \"((SingleColumnValueFilter('cf','LOAD_STRT_DTM',>=, 'binary:2019-04-08 12:48:16.993',true,true)) AND (SingleColumnValueFilter('cf','LOAD_STRT_DTM',<,'binary:2019-04-09 14:43:57.753',true,true)) AND (SingleColumnValueFilter('cf','WORK_FLOW_NM',=,'binaryprefix:EDI_WDS_EDI_465A_SLN_B',true,true)) AND (SingleColumnValueFilter('cf','ZONE_CD',=,'regexstring:RAWZ',true,true)) AND (SingleColumnValueFilter('cf','SUBJ_AREA_NM',=,'regexstring:CLM',true,true)) AND (SingleColumnValueFilter('cf':'PBLSH_IND',=,'binary:Y',true,true)) AND (QualifierFilter (=, 'binary:LOAD_INGSTN_ID')))\"}" | hbase shell
+
+hbase Filter to get the second row of same row key into single row:
+echo -e "scan 'namespace:tableName',{COLUMNS => ['cf:PBLSH_IND','cf:WORK_FLOW_NM','cf:LOAD_INGSTN_ID'], FILTER => \"SingleColumnValueFilter('cf','WORK_FLOW_NM',=,'regexstring:.NASCO.CLM.MEDCHEAD.2',true,true) AND (SingleColumnValueFilter('cf':'PBLSH_IND',=,'binary:Y',true,true))\"}" | hbase shell -n | grep -e LOAD_INGSTN_ID -e WORK_FLOW_NM | awk '{print $1,$4}' | sed 's/value=//' |  sed "N;s/\n/ /" | awk '{print $1,$2,$4}
 
 scan 'test', {COLUMNS => ['F'],FILTER => \ 
 "(SingleColumnValueFilter('F','u',=,'regexstring:http:.*pdf',true,true)) AND \
