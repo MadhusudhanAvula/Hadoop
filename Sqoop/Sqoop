@@ -1,3 +1,6 @@
+Sqoop ANT:
+sqoop eval -Dhadoop.security.credential.provider.path="jceks://hdfs//user/srcantavula/avuladev.jceks" --connect "jdbc:jtds:sqlserver://ca10antsq0000.us.ad.avula.com:00000;domain=US;databaseName=avula;ssl=require;" --driver net.sourceforge.jtds.jdbc.Driver --username avulaextract -password-alias avulaSQL.password.alias --query "select count(*) from [RPT].[Table - avula Linked Claims]" 
+
 sqoop list-databases \
   --connect "jdbc:mysql://sandbox.hortonworks.com:3306" \
   --username retail_dba \
