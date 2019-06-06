@@ -49,14 +49,7 @@ hive -e "show tables 'temp_*'" | xargs -I '{}' hive -e 'drop table {}'
 
 ##Convert String time/date to TIMESTAMP
 select from_unixtime(unix_timestamp(clm_rcvd_dt ,'yyyyMMdd'), 'yyyy-MM-dd HH:mm:ss.S')
-from db_name.CLM_EDI_EDI_400A_CLM_HDR;
+from db_name.table;
 
-CASE WHEN TRIM(SOR_CD) IN ('1104','1037','1026','1028','1029','1030','1034','1060','1090','1091','1092','1093','1094','1095','1096','1097','1098','1099') THEN 'GBD'
-             WHEN TRIM(SOR_CD) IN (‘128','300','505',878',888,896') THEN 'FEP' /*this may be set using the LZ_HOUSE_ACCT table look  up) */
-ELSE 'COM' END AS BDF_LOB_CD – for COM , make sure source is not BankOf America
-
-
-CASE WHEN TRIM(\"${BDF_SOR_CD}\") IN ('1104','1037','1026','1028','1029','1030','1034','1060','1090','1091','1092','1093','1094','1095','1096','1097','1098','1099') THEN 'GBD' 
-WHEN TRIM(\"${BDF_SOR_CD}\") IN ('128','300','505','878','888','896') THEN 'FEP' ELSE 'COM' END AS BDF_LOB_CD
 ##Date to timestamp
-spark.sql("SELECT from_unixtime(unix_timestamp(MEMM.BRTH_DT,'MM/dd/yyyy'), 'yyyy-MM-dd HH:mm:ss.SSS') from MBRSHP_EDW_MACP_MBRSHP").show(2,False)
+spark.sql("SELECT from_unixtime(unix_timestamp(MEMM.BRTH_DT,'MM/dd/yyyy'), 'yyyy-MM-dd HH:mm:ss.SSS') from table").show(2,False)
