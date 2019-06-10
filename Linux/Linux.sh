@@ -13,6 +13,14 @@ hadoop fs -du -s -h --> to find the size of file
 ls -al
 
 ##Iterate through files in dir and transform all the files in the dir
+To explicitly delete everything that comes after ".com", just tweak your existing sed solution to replace ".com(anything)" with ".com":
+
+sed 's/\.com.*/.com/' file.txt
+I tweaked your regex to escape the first period; otherwise it would have matched something like "thisiscommon.com/something".
+
+Note that you may want to further anchor the ".com" pattern with a trailing forward-slash so that you don't accidentally trim something like "sub.com.domain.com/foo":
+sed 's/\.com\/.*/.com/' file.txt
+
 for files in ./*EDI_4*; do sed 's/dq_rsrc.*//' $files > "$(basename $files)" ; done
 
 sudo lsof -u username | grep 'Book.scala'  --- to check file was open or not in linux
