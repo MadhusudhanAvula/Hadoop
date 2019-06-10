@@ -12,6 +12,9 @@ ps -ef|grep -i manager(or)node | ps -fu hdfs(or)yarn  |  /hadoop dfsadmin -repor
 hadoop fs -du -s -h --> to find the size of file
 ls -al
 
+##Iterate through files in dir and transform all the files in the dir
+for files in ./*EDI_4*; do sed 's/dq_rsrc.*//' $files > "$(basename $files)" ; done
+
 sudo lsof -u username | grep 'Book.scala'  --- to check file was open or not in linux
 
 SCP:
