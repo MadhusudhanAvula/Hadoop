@@ -2,6 +2,32 @@ select pk_hash_key, count(*) from dbname.tabeName group by pk_hash_key having co
 select TX_ID,MBR_ID,PATIENT_DOB,STATUS,pk_hash_key, count(*) from dbname.tabeName group by pk_hash_key having count(*) > 1
 select TX_ID,MBR_ID,PATIENT_DOB,STATUS,pk_hash_key, count(*) as du from dbname.tabeName group by pk_hash_key,TX_ID,MBR_ID,PATIENT_DOB,STATUS having count(*) > 1 order by du desc;
 
+The standard way using SQL window function would be as follows:
+SELECT
+  student, class, score, rank
+FROM (
+  SELECT
+    student, class, score,
+    rank() over (PARTITION BY class ORDER BY score DESC) as rank
+  FROM
+    table
+) t
+WHERE rank <= 2
+An alternative and efficient way to compute top-k items using each_top_k is as follows:
+
+SELECT
+  each_top_k(
+    2, class, score,
+    class, student -- output columns other in addition to rank and score
+  ) as (rank, score, class, student)
+FROM (
+  SELECT * FROM table
+  CLUSTER BY class -- Mandatory for `each_top_k`
+) t
+ `CLUSTER BY x` is a synonym of `DISTRIBUTE BY x CLASS SORT BY x` and required when using `each_top_k`.
+ `each_top_k` is beneficial where the number of grouping keys are large. If the number of grouping keys are not so large (e.g., less than 100), consider using `rank() over` instead.
+ 
+ 
 select * from (SELECT dcn AS ENTRPR_EDI_DCN_ID, CLM_NBR, src_sbscrbr_id as MBRSHP_ID, clm_adjstmnt_nbr,TRIM(CLM_SOR_CD) AS CLM_SOR_CD, BDF_SCRTY_LVL_CD, BDF_EXTRNL_LOAD_CD, GUID, BDF_SOR_CD,BDF_LOAD_LOG_KEY AS PREV_ZONE_BDF_LOAD_LOG_KEY,ROW_NUMBER() OVER(PARTITION BY dcn,clm_nbr  order by clm_adjstmnt_nbr desc ) as rnk from db_name.tableName)q where q.rnk='1'
 
 select count(*) from
