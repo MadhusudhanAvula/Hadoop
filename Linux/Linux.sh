@@ -5,12 +5,14 @@
 3 = 2+1 (write/execute)
 2 = 2 (write)
 1 = 1 (execute)
+
+find ./sourcepath/* -name '*EDI*' -exec mv {} /dest/ \; 
 find / -name "mysql*.jar" --> to search 
 ln -s /root/hdp/java/mysql-commector/version(1.5.8.9) /root/hdp/mysql-connector --> to setup a soft link ln -s /orginal_path  /custome_name
 unlink custome_name --> to unlink the path
 ps -ef|grep -i manager(or)node | ps -fu hdfs(or)yarn  |  /hadoop dfsadmin -report |fsck
 hadoop fs -du -s -h --> to find the size of file
-ls -al
+
 
 ##Iterate through files in dir and transform all the files in the dir
 To explicitly delete everything that comes after ".com", just tweak your existing sed solution to replace ".com(anything)" with ".com":
