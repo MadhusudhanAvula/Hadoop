@@ -1,3 +1,19 @@
+   --showHeader=[true/false]       show column names in query results
+   --headerInterval=ROWS;          the interval between which heades are displayed
+   --fastConnect=[true/false]      skip building table/column list for tab-completion
+   --autoCommit=[true/false]       enable/disable automatic transaction commit
+   --verbose=[true/false]          show verbose error messages and debug info
+   --showWarnings=[true/false]     display connection warnings
+   --showNestedErrs=[true/false]   display nested errors
+   --numberFormat=[pattern]        format numbers using DecimalFormat pattern
+   --force=[true/false]            continue running script even after errors
+   --maxWidth=MAXWIDTH             the maximum width of the terminal
+   --maxColumnWidth=MAXCOLWIDTH    the maximum width to use when displaying columns
+   --silent=[true/false]           be more silent
+   --autosave=[true/false]         automatically save preferences
+   --outputformat=[table/vertical/csv2/tsv2/dsv/csv/tsv]  format mode for result display
+                                   Note that csv, and tsv are deprecated - use csv2, tsv2 inste
+
 select pk_hash_key, count(*) from dbname.tabeName group by pk_hash_key having count(*) > 1;
 select TX_ID,MBR_ID,PATIENT_DOB,STATUS,pk_hash_key, count(*) from dbname.tabeName group by pk_hash_key having count(*) > 1
 select TX_ID,MBR_ID,PATIENT_DOB,STATUS,pk_hash_key, count(*) as du from dbname.tabeName group by pk_hash_key,TX_ID,MBR_ID,PATIENT_DOB,STATUS having count(*) > 1 order by du desc;
