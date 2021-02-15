@@ -246,3 +246,122 @@ if __name__=="__main__":
           [1,2,3],
           ["x","y","z"]]
     print ("%s" % rotate(six))
+    
+#1249. Minimum Remove to Make Valid Parentheses -- Facebook
+ class Solution:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        closed = s.count(")")
+        opened = 0
+        result = ""
+        for ele in s:
+            if ele == "(":
+                if closed == 0:
+                    continue
+                else:
+                    opened +=1
+                    closed -=1
+            if ele == ")":
+                if opened == 0:
+                    closed -=1
+                    continue
+                else:
+                    opened -=1
+            result += ele
+        return result
+sol = Solution()
+print(sol.minRemoveToMakeValid("lee(t(c)o)de)"))
+
+# Google::: Given a string pattern of 0s, 1s , and ?s (wildcards), generate all 0-1 strings that match this pattern. e.g. 1?00?101 -&gt; [10000101, 10001101, 11000101, 11001101]. You can generate the strings in any order that suits you.
+str="1??0?101"
+result=[]
+def binStr(str):
+    if "?" in str:
+        s1 = str.replace("?",'0',1)
+        s2 = str.replace("?",'1',1)
+        binStr(s1)
+        binStr(s2)
+    else: result.append(str)
+    return result
+
+print(binStr(str))
+
+#283. Move Zeroes --> Facebook
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        for ele in nums:
+            print(ele)
+            if ele == 0:
+                nums.remove(ele)
+                nums.append(ele)
+        return nums
+   
+#884. Uncommon Words from Two Sentences
+class Solution:
+    def uncommonFromSentences(self, A: str, B: str) -> List[str]:
+        dict={}
+        def toDict(lst):
+            for ele in lst.split(" "):
+                if ele not in dict:
+                    dict[ele] =1
+                else:
+                    dict[ele] +=1
+        toDict(A)
+        toDict(B)
+        print(dict)
+        return [k for k,v in dict.items() if v == 1]
+#Input: A = "this apple is sweet", B = "this apple is sour", Output: ["sweet","sour"]
+
+#66. Plus One
+class Solution:
+    def plusOne(self, digits: List[int]) -> List[int]:
+        if len(digits) == 0:
+            return [1]
+
+        if digits[-1] != 9:
+            digits[-1] += 1
+            return digits
+        
+        else:
+            digits = self.plusOne(digits[:-1])
+            digits.append(0)
+            return digits
+#Input: digits = [1,2,3], Output: [1,2,4]
+
+#1. Two Sum
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        for i in range(len(nums)):
+            for j in range(i+1, len(nums)):
+                if nums[i] + nums[j] == target:
+                    return [i,j]
+#Input: nums = [2,7,11,15], target = 9, Output: [0,1], Output: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+#1396. Design Underground System -- bloomberg
+class UndergroundSystem:
+
+    def __init__(self):
+        self.check_in={}
+        self.trip=defaultdict(list)
+        
+    def checkIn(self, id: int, stationName: str, t: int) -> None:
+        self.check_in[id] = (stationName, t)
+        
+    def checkOut(self, id: int, stationName: str, t: int) -> None:
+        checkInStation, checkInTime = self.check_in[id]
+        self.trip[(checkInStation, stationName)].append(t-checkInTime)
+        
+    def getAverageTime(self, startStation: str, endStation: str) -> float:
+        trips = self.trip[(startStation, endStation)]
+        return sum(trips)/len(trips) 
+
+
+# Your UndergroundSystem object will be instantiated and called as such:
+# obj = UndergroundSystem()
+# obj.checkIn(id,stationName,t)
+# obj.checkOut(id,stationName,t)
+# param_3 = obj.getAverageTime(startStation,endStation)
+
+#Input ["UndergroundSystem","checkIn","checkIn","checkIn","checkOut","checkOut","checkOut","getAverageTime","getAverageTime","checkIn","getAverageTime","checkOut","getAverageTime"][[],[45,"Leyton",3],[32,"Paradise",8],[27,"Leyton",10],[45,"Waterloo",15],[27,"Waterloo",20],[32,"Cambridge",22],["Paradise","Cambridge"],["Leyton","Waterloo"],[10,"Leyton",24],["Leyton","Waterloo"],[10,"Waterloo",38],["Leyton","Waterloo"]]
