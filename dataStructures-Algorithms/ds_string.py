@@ -398,3 +398,105 @@ class UndergroundSystem:
 # param_3 = obj.getAverageTime(startStation,endStation)
 
 #Input ["UndergroundSystem","checkIn","checkIn","checkIn","checkOut","checkOut","checkOut","getAverageTime","getAverageTime","checkIn","getAverageTime","checkOut","getAverageTime"][[],[45,"Leyton",3],[32,"Paradise",8],[27,"Leyton",10],[45,"Waterloo",15],[27,"Waterloo",20],[32,"Cambridge",22],["Paradise","Cambridge"],["Leyton","Waterloo"],[10,"Leyton",24],["Leyton","Waterloo"],[10,"Waterloo",38],["Leyton","Waterloo"]]
+
+# Google::: Given a string pattern of 0s, 1s , and ?s (wildcards), generate all 0-1 strings that match this pattern. e.g. 1?00?101 -&gt; [10000101, 10001101, 11000101, 11001101]. You can generate the strings in any order that suits you.
+str="1??0?101"
+result=[]
+def binStr(str):
+    if "?" in str:
+        s1 = str.replace("?",'0',1)
+        s2 = str.replace("?",'1',1)
+        binStr(s1)
+        binStr(s2)
+    else: result.append(str)
+    return result
+
+print(binStr(str))
+
+#JPM::: Find the intersection of two arrays of integers.
+A = [1,4,3,2,5,8,9]
+B = [6,3,2,7,5]
+for i in A:
+    if i in B:
+        print(i)
+
+#union of two arrays
+st = set()
+for i in A:
+    for j in B:
+        if i not in st or j not in st:
+            st.add(i)
+            st.add(i)
+print(st)
+
+#https://leetcode.com/discuss/interview-question/760228/goldman-sachs-coderpad-interview-1st-round-data-engineer-2-year-exp-july-2020
+#GS::: Given a 2-D String array of student-marks find the student with the highest average and output his average score. If the average is in decimals, floor it down to the nearest integer.
+arr = [["Bob","80"], ["Bob","87"], ["Mike", "35"],["Bob", "52"], ["Jason","35"], ["Mike", "55"], ["Jessica", "99"]]
+dict ={}
+for ele in arr:
+    if ele[0] in dict:
+        dict[ele[0]] = (int(ele[1]) + int(dict[ele[0]]))/2
+    else:
+        dict[ele[0]] = int(ele[1])
+print(max(dict.values()))
+
+#GS::: Given a string like ‘UUUDULR’, need to derive the final coordinates starting from (0, 0). This is pretty easy and he is asked to add a few other test cases if I would like to.
+str = "LLLUUUUURDDDXLLR"
+out = [0,0]
+for i in str:
+    if i == "U":
+        out[1] = out[1] + 1
+    if i == "D":
+        out[1] = out[1] - 1
+    if i == "R":
+        out[0] = out[0] + 1
+    if i == "L":
+        out[0] = out[0] - 1
+print(out)
+
+#JPM https://leetcode.com/problems/happy-number/
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        arr = []
+        
+        while n != 1:
+            if n in arr: return False
+            arr.append(n)
+            n = sum([int(i)**2 for i in str(n)])
+        
+        return True
+obj = Solution
+obj.isHappy( 19)
+#JPM Fibonacci Series - NOV 2020
+#JPM Decode String or decoding numbers - NOV 2020
+
+# isvalid parentheses
+class Solution(object):
+    def isValid(s):
+        stack = []
+        match = {'(': ')', '[': ']', '{': '}'}
+        for c in s:
+            if c in ['(', '[', '{']:
+                stack.append(c)
+            elif not stack or match[stack.pop()] != c:
+                return False
+            print(stack)
+        return not stack
+
+obj = Solution
+obj.isValid( "([)]")
+
+# https://leetcode.com/discuss/interview-experience/281149/facebook-data-engineer
+# find the average length of word in sentence
+# Validate the ip address
+# FB May 2020 for a list array=[['D'],['A','B'],['A','C'],['C','A']] find the number of followers
+d = dict()
+for x in input_array:
+    if x[0] not in d.keys():
+        d[x[0]] = 1
+    else:
+        d[x[0]] += 1       
+return d
+
+input_arr = [['D'], ['A', 'B'], ['A', 'C'], ['C', 'A']]
+print(find_followers(input_arr)) # -> {'D': 1, 'A': 2, 'C': 1}
